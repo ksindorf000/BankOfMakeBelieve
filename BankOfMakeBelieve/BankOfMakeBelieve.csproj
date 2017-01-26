@@ -53,9 +53,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankContext.cs" />
+    <Compile Include="MethodClasses\CreateNewUser.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.Designer.cs">
       <DependentUpon>201701261959490_InitialSetUp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701262018114_AddedDateJoinedToUserTable.cs" />
+    <Compile Include="Migrations\201701262018114_AddedDateJoinedToUserTable.Designer.cs">
+      <DependentUpon>201701262018114_AddedDateJoinedToUserTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -72,6 +77,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701261959490_InitialSetUp.resx">
       <DependentUpon>201701261959490_InitialSetUp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701262018114_AddedDateJoinedToUserTable.resx">
+      <DependentUpon>201701262018114_AddedDateJoinedToUserTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

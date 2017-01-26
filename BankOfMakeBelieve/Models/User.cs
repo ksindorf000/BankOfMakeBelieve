@@ -13,5 +13,6 @@ namespace BankOfMakeBelieve.Models
         public string password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public DateTime DateJoined { get; set; }
     }
 }
