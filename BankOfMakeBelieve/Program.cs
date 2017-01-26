@@ -89,31 +89,5 @@ namespace BankOfMakeBelieve
 
         }
 
-
-        /*****************************************************
-         * CreateNewUser()
-         *     Gets and saves User Data to db
-         ****************************************************/
-        private static void CreateNewUser(BankContext db)
-        {
-            
-                var first = WriteRead("First Name? ");
-                var last = WriteRead("Last Name? ");
-                var username = WriteRead("UserName? ");
-                var password = WriteRead("Password? ");
-                var joinDate = DateTime.Now;
-
-                User newUser = new User
-                {
-                    FirstName = first,
-                    LastName = last,
-                    username = username,
-                    DateJoined = joinDate
-                };
-
-                db.User.Add(newUser);
-                db.SaveChanges();
-            
-        }
     }
 }

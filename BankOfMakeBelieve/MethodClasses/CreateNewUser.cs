@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankOfMakeBelieve.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,35 +9,59 @@ namespace BankOfMakeBelieve.MethodClasses
 {
     class CreateNewUser
     {
-        // --------------- Use to check if entered username is unique ------------------
-        // https://www.simple-talk.com/dotnet/net-framework/catching-bad-data-in-entity-framework/
-        
-        //    public class MyDbContext : DbContext
-        //    {
-        //        public DbSet<Tag> Tags { get; set; }
-        //        //...etc.
-        //        protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry,
-        //            IDictionary<object, object> items)
-        //        {
+        public string first;
+        public string last;
+        public string username;
+        private string password;
+        public DateTime dateJoined = DateTime.Now;
 
-        //            if (entityEntry.Entity is Tag &&
-        //                        (entityEntry.State == EntityState.Added
-        //                          || entityEntry.State == EntityState.Modified))
-        //            {
-        //                var tagToCheck = ((Tag)entityEntry.Entity);
+        /*****************************************************
+         * WriteRead()
+         *     Combines C.W() and C.RL()
+         ****************************************************/
+        static string WriteRead(string input)
+        {
+            Console.Write(input);
+            return Console.ReadLine();
+        }
 
-        //                //check for uniqueness of Tag's Slug 
-        //                if (Tags.Any(x => x.TagId != tagToCheck.TagId && x.Slug == tagToCheck.Slug))
-        //                    return
-        //                           new DbEntityValidationResult(entityEntry,
-        //                         new List<DbValidationError>
-        //                             {
-        //                         new DbValidationError( "Slug",
-        //                             string.Format( "The Slug on tag '{0}' must be unique.", tagToCheck.Name))
-        //                             });
-        //            }
+        /*****************************************************
+         * GetVerifyInput()
+         *     Gets and verifies User Data
+         ****************************************************/
+        public void GetVerifyInput(BankContext db)
+        {
+            bool usernameUnique = true;
 
-        //            return base.ValidateEntity(entityEntry, items);
-        //        }
+            while (!usernameUnique)
+            {
+                string first = WriteRead("First Name? ");
+                string last = WriteRead("Last Name? ");
+                string username = WriteRead("UserName? ");
+                string password = WriteRead("Password? ");
+
+                //Check for existing username
+                usernameUnique = db.User.Any(u => u.username == username);
+            }
+
+            AddNewUser(db);
+        }
+
+        /*****************************************************
+         * AddNewUser()
+         ****************************************************/
+        private void AddNewUser(BankContext db)
+        {
+            User newUser = new User
+            {
+                FirstName = first,
+                LastName = last,
+                username = username,
+                DateJoined = dateJoined
+            };
+
+            db.User.Add(newUser);
+            db.SaveChanges();
+        }
     }
 }
