@@ -15,7 +15,7 @@ namespace BankOfMakeBelieve.Models
 
         public override string ToString()
         {
-            return $"{Type} - {Id}";
+            return $"{Type} - {Id}: {Balance}";
         }
     }
 }

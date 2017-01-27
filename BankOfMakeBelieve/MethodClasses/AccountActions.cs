@@ -29,14 +29,34 @@ namespace BankOfMakeBelieve.MethodClasses
 
             Console.Clear();
 
-            Console.WriteLine($"------- Welcome to the Bank of Make Believe, {currentUser.FirstName}! -------\n");
+            Console.WriteLine
+                ("---------------------------------------------------------\n" +
+                $"\t ------- HELLO, {currentUser.FirstName.ToUpper()}! -------\n" +
+                "---------------------------------------------------------\n");
+
+            Console.WriteLine("Available Accounts:");
+
+            /* Get Accounts owned by user
+             * 
+             * SELECT a.Type, a.Id, a.Balance
+             * FROM Account a
+             * INNER JOIN UserAccounts ua ON ua.AccountId = a.Id
+             * INNER JOIN User u ON u.Id = ua.UserId
+             * WHERE u.Id = {{ currentUser.Id }}
+             */
+
+            foreach (var acct in db.UserAccounts.Where(u => u.UserId == currentUser.Id).ToList())
+            {
+                Console.WriteLine(acct.Account);
+            }
+
             input = WriteRead("How can we help you today?: \n" +
-                "(C)reate New Account" +
-                "Make a (D)eposit" +
-                "Make a (W)ithdrawal" +
-                //"Transfer Between Accounts" +
-                //"Add New User To Your Accounts" +
-                "(L)og Out \n");
+                            "(C)reate New Account \n" +
+                            "Make a (D)eposit \n" +
+                            "Make a (W)ithdrawal \n" +
+                            //"Transfer Between Accounts" +
+                            //"Add New User To Your Accounts" +
+                            "(L)og Out \n");
 
             while (invalidInput)
             {
@@ -46,14 +66,14 @@ namespace BankOfMakeBelieve.MethodClasses
                         CreateNewAccount.GetTypeAndBal(db, currentUser);
                         invalidInput = false;
                         break;
-                    case "D":
-                        ProcTransaction.Deposit(db, currentUser);
-                        invalidInput = false;
-                        break;
-                    case "W":
-                        ProcTransaction.Withdraw(db, currentUser);
-                        invalidInput = false;
-                        break;
+                    //case "D":
+                    //    ProcTransaction.Deposit(db, currentUser);
+                    //    invalidInput = false;
+                    //    break;
+                    //case "W":
+                    //    ProcTransaction.Withdraw(db, currentUser);
+                    //    invalidInput = false;
+                    //    break;
                     //case "T":
                     //    ProcTransaction.Transfer(db, currentUser);
                     //    invalidInput = false;
@@ -64,6 +84,7 @@ namespace BankOfMakeBelieve.MethodClasses
                     //    break;
                     case "L":
                         invalidInput = false;
+                        Console.Clear();
                         break;
                     default:
                         input = WriteRead("Sorry, you must choose (C)hecking or (S)avings: ");

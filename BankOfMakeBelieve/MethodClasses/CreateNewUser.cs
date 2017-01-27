@@ -51,7 +51,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 if (tryAgain.ToUpper() == "L")
                 {
                     Console.Clear();
-                    Program.LogIn(db);
+                    LogIn.ValidateUser(db);
                 }
             }
 

@@ -24,13 +24,18 @@ namespace BankOfMakeBelieve.MethodClasses
          ****************************************************/
         public static void CreateOrLogin()
         {
-            string newOrOldUser;
+            string newOrOldUser = "";
             bool valid = false;
 
             using (var db = new BankContext())
             {
                 while (!valid)
                 {
+                    Console.WriteLine
+                        ("---------------------------------------------------------\n" +
+                        $"\t ------- BANK OF MAKE BELIEVE -------\n" +
+                        "---------------------------------------------------------\n");
+
                     newOrOldUser = WriteRead("(L)og In or (C)reate New User: ").ToUpper();
 
                     switch (newOrOldUser)
@@ -41,6 +46,7 @@ namespace BankOfMakeBelieve.MethodClasses
                         case "C":
                             CreateNewUser.GetVerifyInput(db); //Threw static error
                             Console.Clear();
+                            valid = true;
                             break;
                         default:
                             break;
@@ -78,9 +84,10 @@ namespace BankOfMakeBelieve.MethodClasses
                 else
                 {
                     var currentUser = db.User.First(u => u.username == inputUN && u.password == inputPW);
-                    Console.ReadLine();
                     AccountActions.AccountMenu(db, currentUser);
+                    userNotFound = false;
                 }
             }
         }
-        
+    }
+}
