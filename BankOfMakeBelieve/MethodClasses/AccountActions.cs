@@ -25,13 +25,14 @@ namespace BankOfMakeBelieve.MethodClasses
         {
             DisplayWelcomeMsg(db, currentUser);
             
-            input = WriteRead("\n\n How can we help you today?: \n" +
-                            "(C)reate New Account \n" +
+            input = WriteRead("How can we help you today?: \n" +
                             "Make a (D)eposit \n" +
                             "Make a (W)ithdrawal \n" +
-                            //"Transfer Between Accounts" +
-                            //"Add New User To Your Accounts" +
-                            "(L)og Out \n\n\n");
+                            "Create (N)ew Account \n" +
+                            //"Make a (T)ransfer between Accounts" +
+                            //"Add New (U)ser To Your Accounts" +
+                            //"See all (A)ctivity for an Account" +
+                            "(L)og Out \n\n");
 
             ProcessSelection(db, currentUser, input);
         }
@@ -46,7 +47,7 @@ namespace BankOfMakeBelieve.MethodClasses
             DisplayBankName.Banner();
 
             Console.WriteLine
-                ($"\n HELLO, {currentUser.FirstName.ToUpper()}! \n\n");
+                ($"HELLO, {currentUser.FirstName.ToUpper()}! \n\n");
 
             Console.WriteLine("Available Accounts:");
 
@@ -63,6 +64,7 @@ namespace BankOfMakeBelieve.MethodClasses
             {
                 Console.WriteLine(acct.Account);
             }
+            Console.WriteLine("\n\n");
         }
 
         /*****************************************************
@@ -77,16 +79,16 @@ namespace BankOfMakeBelieve.MethodClasses
             {
                 switch (input.ToUpper())
                 {
-                    case "C":
-                        CreateNewAccount.GetTypeAndBal(db, currentUser);
+                    case "D":
+                        ProcTransaction.Deposit(db, currentUser);
                         invalidInput = false;
                         break;
-                    //case "D":
-                    //    ProcTransaction.Deposit(db, currentUser);
-                    //    invalidInput = false;
-                    //    break;
                     case "W":
                         ProcTransaction.Withdraw(db, currentUser);
+                        invalidInput = false;
+                        break;
+                    case "N":
+                        CreateNewAccount.GetTypeAndBal(db, currentUser);
                         invalidInput = false;
                         break;
                     //case "T":
@@ -94,7 +96,11 @@ namespace BankOfMakeBelieve.MethodClasses
                     //    invalidInput = false;
                     //    break;
                     //case "U":
-                    //    CreateNewUser.AddToExistingAcct(db);
+                    //    CreateNewUser.AddToExistingAcct(db, currentUser);
+                    //    invalidInput = false;
+                    //    break;
+                    //case "A":
+                    //    Transactions.ViewAllActivity(db, currentUser);
                     //    invalidInput = false;
                     //    break;
                     case "L":

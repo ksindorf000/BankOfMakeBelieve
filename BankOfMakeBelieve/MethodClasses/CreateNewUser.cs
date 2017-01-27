@@ -78,6 +78,7 @@ namespace BankOfMakeBelieve.MethodClasses
             db.SaveChanges();
 
             CreateNewAccount.GetTypeAndBal(db, newUser);
+            AccountActions.AccountMenu(db, newUser);
         }
 
     }

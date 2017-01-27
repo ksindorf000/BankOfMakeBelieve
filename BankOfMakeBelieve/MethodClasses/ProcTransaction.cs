@@ -10,6 +10,10 @@ namespace BankOfMakeBelieve.MethodClasses
 {
     class ProcTransaction
     {
+        public static string wOrD;
+        public static double acctBalance;
+        public static Account useAccount = new Account();
+
         /*****************************************************
          * WriteRead()
          *     Combines C.W() and C.RL()
@@ -20,6 +24,34 @@ namespace BankOfMakeBelieve.MethodClasses
             return Console.ReadLine();
         }
 
+        /*****************************************************
+         * Deposit()
+         *     Gets account to deposit into
+         *     Gets amount to deposit
+         *     Selects current balance
+         *     Display end balance
+         *     Recall account menu
+         ****************************************************/
+        public static void Deposit(BankContext db, User currentUser)
+        {
+            wOrD = "deposit";
+            double dAmount;
+
+            //Get Account balance
+            GetValidateAcctNum(db, currentUser, wOrD);
+            acctBalance = useAccount.Balance;
+
+            //Get Validate Amount
+            dAmount = ValidateAmount(db, currentUser);
+
+            //Update Account.Balance
+            useAccount.Balance += dAmount;
+            db.SaveChanges();
+
+            Console.Clear();
+            AccountActions.AccountMenu(db, currentUser);
+
+        }
 
         /*****************************************************
          * Withdraw()
@@ -32,46 +64,19 @@ namespace BankOfMakeBelieve.MethodClasses
          ****************************************************/
         public static void Withdraw(BankContext db, User currentUser)
         {
-            string userInput;
+            wOrD = "withdraw";
             double wAmount = 0;
-            double acctBalance;
-            bool validAmnt = false;
 
             //Get Account balance
-            Account useAcct = GetValidateAccount(db, currentUser, "withdrawal");
-            acctBalance = useAcct.Balance;
+            GetValidateAcctNum(db, currentUser, wOrD);
+            acctBalance = useAccount.Balance;
 
-            while (!validAmnt)
-            {
-                Console.Clear();
-                AccountActions.DisplayWelcomeMsg(db, currentUser);
+            //Get Validate Amount
+            wAmount = ValidateAmount(db, currentUser);
 
-                userInput = WriteRead("How much would you like to withdraw? \n " +
-                    "(100.00) or (C)ancel: ").ToUpper();
-
-                //If (C)ancel, break. Else, try to parse
-                if (userInput == "C")
-                {
-                    AccountActions.AccountMenu(db, currentUser);
-                    break;
-                }
-                else
-                {
-                    validAmnt = double.TryParse(userInput, out wAmount);
-                }
-
-                //If valid amount was entered and will not overdraft account
-                if (validAmnt && (acctBalance - wAmount) >= 0)
-                {
-                    useAcct.Balance = acctBalance - wAmount;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    Console.WriteLine($"Sorry, your account will not support a {wAmount} withdrawal.");
-                    validAmnt = false;
-                }
-            }
+            //Update Account.Balance
+            useAccount.Balance -= wAmount;
+            db.SaveChanges();
 
             Console.Clear();
             AccountActions.AccountMenu(db, currentUser);
@@ -81,11 +86,10 @@ namespace BankOfMakeBelieve.MethodClasses
         /*****************************************************
          * GetValidateAccount()
          ****************************************************/
-        private static Account GetValidateAccount(BankContext db, User currentUser, string wOrD) //Hehe, "wOrD" -- get it?
+        private static void GetValidateAcctNum(BankContext db, User currentUser, string wOrD) //Hehe, "wOrD" -- get it?
         {
             bool validAcctNum = false;
             int wchAcct = 0;
-            Account useAccount = new Account();
 
             //Get and validate account number
             while (!validAcctNum)
@@ -107,7 +111,6 @@ namespace BankOfMakeBelieve.MethodClasses
                     else { WriteRead("Sorry, that account number is invalid."); };
                 }
             }
-            return useAccount;
 
             //Get Account Balance
             /*
@@ -118,6 +121,54 @@ namespace BankOfMakeBelieve.MethodClasses
              * WHERE a.Id = {{ wchAcct }} AND u.Id = {{ currentUser.Id }}
              */
 
+        }
+
+        /*****************************************************
+         * ValidateAmount()
+         *     If input = (C)ancel, kick back to AccountMenu()
+         *     Else TryParse input and return amount
+         ****************************************************/
+        private static double ValidateAmount(BankContext db, User currentUser)
+        {
+            string userInput;
+            double amount = 0;
+            bool validAmnt = false;
+
+            while (!validAmnt)
+            {
+                Console.Clear();
+                AccountActions.DisplayWelcomeMsg(db, currentUser);
+
+                userInput = WriteRead($"How much would you like to {wOrD}? \n " +
+                    "(100.00) or (C)ancel: ").ToUpper();
+
+                //If (C)ancel, break. Else, try to parse
+                if (userInput == "C")
+                {
+                    AccountActions.AccountMenu(db, currentUser);
+                    break;
+                }
+                else
+                {
+                    validAmnt = double.TryParse(userInput, out amount);
+                }
+
+                //Check for overdraft
+                if (validAmnt && wOrD == "withdraw")
+                {
+                    if ((acctBalance - amount) >= 0)
+                    {
+                        validAmnt = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Sorry, your account will not support a {amount} withdrawal.");
+                        validAmnt = false;
+                    }
+                }
+            }
+
+            return amount;
         }
     }
 }
