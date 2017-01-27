@@ -79,27 +79,27 @@ namespace BankOfMakeBelieve.MethodClasses
             {
                 switch (input.ToUpper())
                 {
-                    case "D":
+                    case "D": //Deposit
                         ProcTransaction.Deposit(db, currentUser);
                         invalidInput = false;
                         break;
-                    case "W":
+                    case "W": //Withdraw
                         ProcTransaction.Withdraw(db, currentUser);
                         invalidInput = false;
                         break;
-                    case "N":
+                    case "N": //New Account
                         CreateNewAccount.GetTypeAndBal(db, currentUser);
                         invalidInput = false;
                         break;
-                    //case "T":
+                    //case "T": //Transfer
                     //    ProcTransaction.Transfer(db, currentUser);
                     //    invalidInput = false;
                     //    break;
-                    //case "U":
+                    //case "U": //New User
                     //    CreateNewUser.AddToExistingAcct(db, currentUser);
                     //    invalidInput = false;
                     //    break;
-                    //case "A":
+                    //case "A": //All Activity
                     //    Transactions.ViewAllActivity(db, currentUser);
                     //    invalidInput = false;
                     //    break;

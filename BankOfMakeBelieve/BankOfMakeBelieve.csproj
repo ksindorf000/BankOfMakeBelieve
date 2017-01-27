@@ -59,6 +59,7 @@
     <Compile Include="MethodClasses\DisplayBankName.cs" />
     <Compile Include="MethodClasses\LogIn.cs" />
     <Compile Include="MethodClasses\ProcTransaction.cs" />
+    <Compile Include="MethodClasses\AddDisplayTransactions.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.Designer.cs">
       <DependentUpon>201701261959490_InitialSetUp.cs</DependentUpon>
@@ -70,6 +71,10 @@
     <Compile Include="Migrations\201701271537028_ChangedAccNameToType.cs" />
     <Compile Include="Migrations\201701271537028_ChangedAccNameToType.Designer.cs">
       <DependentUpon>201701271537028_ChangedAccNameToType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701272329150_AddedDateToTransactions.cs" />
+    <Compile Include="Migrations\201701272329150_AddedDateToTransactions.Designer.cs">
+      <DependentUpon>201701272329150_AddedDateToTransactions.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -92,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701271537028_ChangedAccNameToType.resx">
       <DependentUpon>201701271537028_ChangedAccNameToType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701272329150_AddedDateToTransactions.resx">
+      <DependentUpon>201701272329150_AddedDateToTransactions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
