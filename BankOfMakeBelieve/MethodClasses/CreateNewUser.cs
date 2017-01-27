@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace BankOfMakeBelieve.MethodClasses
 {
-    public class CreateNewUser
+    public class CreateNewUser //Also adds account to user
     {
         public static string first;
         public static string last;
         public static string username;
         private static string password;
-        private static string accType;
-        private static double startBal;
 
         /*****************************************************
          * WriteRead()
@@ -41,9 +39,9 @@ namespace BankOfMakeBelieve.MethodClasses
             while (notUnique)
             {
                 username = WriteRead("UserName? ");
-                
+
                 //Check for existing username: false if match not found, true if match found
-                notUnique = db.User.Any(u => u.username == username); 
+                notUnique = db.User.Any(u => u.username == username);
 
                 if (!notUnique) { break; };
 
@@ -60,7 +58,6 @@ namespace BankOfMakeBelieve.MethodClasses
             password = WriteRead("Password? ");
 
             AddNewUser(db);
-            AddNewAccount(db);
         }
 
         /*****************************************************
@@ -75,28 +72,13 @@ namespace BankOfMakeBelieve.MethodClasses
                 username = username,
                 password = password,
                 DateJoined = DateTime.Now
-        };
+            };
 
             db.User.Add(newUser);
             db.SaveChanges();
+
+            CreateNewAccount.GetTypeAndBal(db, newUser);
         }
 
-
-        /*****************************************************
-         * AddNewAccount()
-         *      Gets Account Type from user
-         *      Adds account to Account table
-         ****************************************************/
-        private static void AddNewAccount(BankContext db)
-        {
-            Account newAccount = new Account
-            {
-                Balance = startBal,
-                DateOpened = DateTime.Now
-            };
-
-            db.Account.Add(newAccount);
-            db.SaveChanges();
-        }
     }
 }

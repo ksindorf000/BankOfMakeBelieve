@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankContext.cs" />
+    <Compile Include="MethodClasses\CreateNewAccount.cs" />
     <Compile Include="MethodClasses\CreateNewUser.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.Designer.cs">
