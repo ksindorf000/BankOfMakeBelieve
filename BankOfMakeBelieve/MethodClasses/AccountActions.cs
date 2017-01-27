@@ -1,14 +1,13 @@
 ﻿using BankOfMakeBelieve.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankOfMakeBelieve.MethodClasses
 {
     class AccountActions
     {
+        public static string input;
+
         /*****************************************************
          * WriteRead()
          *     Combines C.W() and C.RL()
@@ -24,9 +23,26 @@ namespace BankOfMakeBelieve.MethodClasses
          ****************************************************/
         public static void AccountMenu(BankContext db, User currentUser)
         {
-            string input;
-            bool invalidInput = true;
+            DisplayWelcomeMsg(db, currentUser);
+            
+            input = WriteRead("How can we help you today?: \n" +
+                            "(C)reate New Account \n" +
+                            "Make a (D)eposit \n" +
+                            "Make a (W)ithdrawal \n" +
+                            //"Transfer Between Accounts" +
+                            //"Add New User To Your Accounts" +
+                            "(L)og Out \n");
 
+            ProcessSelection(db, currentUser);
+        }
+
+        /*****************************************************
+        * DisplayWelcomeMsg()
+        *   Personlized welcome
+        *   Displays account balances
+        ****************************************************/
+        public static void DisplayWelcomeMsg(BankContext db, User currentUser)
+        {
             Console.Clear();
 
             Console.WriteLine
@@ -37,26 +53,27 @@ namespace BankOfMakeBelieve.MethodClasses
             Console.WriteLine("Available Accounts:");
 
             /* Get Accounts owned by user
-             * 
-             * SELECT a.Type, a.Id, a.Balance
-             * FROM Account a
-             * INNER JOIN UserAccounts ua ON ua.AccountId = a.Id
-             * INNER JOIN User u ON u.Id = ua.UserId
-             * WHERE u.Id = {{ currentUser.Id }}
-             */
+            * 
+            * SELECT a.Type, a.Id, a.Balance
+            * FROM Account a
+            * INNER JOIN UserAccounts ua ON ua.AccountId = a.Id
+            * INNER JOIN User u ON u.Id = ua.UserId
+            * WHERE u.Id = {{ currentUser.Id }}
+            */
 
-            foreach (var acct in db.UserAccounts.Where(u => u.UserId == currentUser.Id).ToList())
+            foreach (var acct in currentUser.userAccounts)
             {
                 Console.WriteLine(acct.Account);
             }
+        }
 
-            input = WriteRead("How can we help you today?: \n" +
-                            "(C)reate New Account \n" +
-                            "Make a (D)eposit \n" +
-                            "Make a (W)ithdrawal \n" +
-                            //"Transfer Between Accounts" +
-                            //"Add New User To Your Accounts" +
-                            "(L)og Out \n");
+        /*****************************************************
+        * ProcessSelection()
+        *   Validates input and calls appropriate method
+        ****************************************************/
+        private static void ProcessSelection(BankContext db, User currentUser)
+        {
+            bool invalidInput = true;
 
             while (invalidInput)
             {

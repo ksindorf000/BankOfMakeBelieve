@@ -14,5 +14,7 @@ namespace BankOfMakeBelieve.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateJoined { get; set; }
+
+        public virtual ICollection<UserAccounts> userAccounts { get; set; }
     }
 }
