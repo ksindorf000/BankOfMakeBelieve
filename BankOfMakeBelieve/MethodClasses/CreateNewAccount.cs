@@ -31,7 +31,7 @@ namespace BankOfMakeBelieve.MethodClasses
 
             Console.Clear();
 
-            Console.WriteLine($"------- Welcome to the Bank of Make Believe, {newUser.FirstName}! -------");
+            Console.WriteLine($"------- Welcome to the Bank of Make Believe, {newUser.FirstName}! -------\n");
             accType = WriteRead("What type of account would you like to create? \n" +
                 "(C)hecking or (S)aving: ");
 
@@ -64,6 +64,8 @@ namespace BankOfMakeBelieve.MethodClasses
             }
             
             AddNewAccount(db, newUser);
+            //Console.Clear();
+            //AccountMenu();
         }
 
         /*****************************************************

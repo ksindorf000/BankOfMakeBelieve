@@ -11,7 +11,7 @@ namespace BankOfMakeBelieve.Test
     {
         /*****************************************************
          * ValidateUNandPW()
-         *      Does LogIn() accurately authenticate entered
+         *      Does ValidateUser() accurately authenticate entered
          *      username and password?
          *      
          *      NOT WORKING -- something isn't hooked up
