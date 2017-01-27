@@ -56,6 +56,7 @@
     <Compile Include="MethodClasses\AccountActions.cs" />
     <Compile Include="MethodClasses\CreateNewAccount.cs" />
     <Compile Include="MethodClasses\CreateNewUser.cs" />
+    <Compile Include="MethodClasses\DisplayBankName.cs" />
     <Compile Include="MethodClasses\LogIn.cs" />
     <Compile Include="MethodClasses\ProcTransaction.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.cs" />

@@ -25,15 +25,15 @@ namespace BankOfMakeBelieve.MethodClasses
         {
             DisplayWelcomeMsg(db, currentUser);
             
-            input = WriteRead("How can we help you today?: \n" +
+            input = WriteRead("\n\n How can we help you today?: \n" +
                             "(C)reate New Account \n" +
                             "Make a (D)eposit \n" +
                             "Make a (W)ithdrawal \n" +
                             //"Transfer Between Accounts" +
                             //"Add New User To Your Accounts" +
-                            "(L)og Out \n");
+                            "(L)og Out \n\n\n");
 
-            ProcessSelection(db, currentUser);
+            ProcessSelection(db, currentUser, input);
         }
 
         /*****************************************************
@@ -43,12 +43,10 @@ namespace BankOfMakeBelieve.MethodClasses
         ****************************************************/
         public static void DisplayWelcomeMsg(BankContext db, User currentUser)
         {
-            Console.Clear();
+            DisplayBankName.Banner();
 
             Console.WriteLine
-                ("---------------------------------------------------------\n" +
-                $"\t ------- HELLO, {currentUser.FirstName.ToUpper()}! -------\n" +
-                "---------------------------------------------------------\n");
+                ($"\n HELLO, {currentUser.FirstName.ToUpper()}! \n\n");
 
             Console.WriteLine("Available Accounts:");
 
@@ -71,7 +69,7 @@ namespace BankOfMakeBelieve.MethodClasses
         * ProcessSelection()
         *   Validates input and calls appropriate method
         ****************************************************/
-        private static void ProcessSelection(BankContext db, User currentUser)
+        private static void ProcessSelection(BankContext db, User currentUser, string input)
         {
             bool invalidInput = true;
 
@@ -87,10 +85,10 @@ namespace BankOfMakeBelieve.MethodClasses
                     //    ProcTransaction.Deposit(db, currentUser);
                     //    invalidInput = false;
                     //    break;
-                    //case "W":
-                    //    ProcTransaction.Withdraw(db, currentUser);
-                    //    invalidInput = false;
-                    //    break;
+                    case "W":
+                        ProcTransaction.Withdraw(db, currentUser);
+                        invalidInput = false;
+                        break;
                     //case "T":
                     //    ProcTransaction.Transfer(db, currentUser);
                     //    invalidInput = false;
@@ -104,7 +102,8 @@ namespace BankOfMakeBelieve.MethodClasses
                         Console.Clear();
                         break;
                     default:
-                        input = WriteRead("Sorry, you must choose (C)hecking or (S)avings: ");
+                        WriteRead("Sorry, you must choose one of the options above.");
+                        AccountMenu(db, currentUser);
                         break;
                 }
             }

@@ -29,11 +29,7 @@ namespace BankOfMakeBelieve.MethodClasses
             {
                 while (!valid)
                 {
-                    Console.WriteLine
-                        ("---------------------------------------------------------\n" +
-                        $"\t ------- BANK OF MAKE BELIEVE -------\n" +
-                        "---------------------------------------------------------\n");
-
+                    DisplayBankName.Banner();
                     newOrOldUser = WriteRead("(L)og In or (C)reate New User: ").ToUpper();
 
                     switch (newOrOldUser)
@@ -53,6 +49,7 @@ namespace BankOfMakeBelieve.MethodClasses
             }
         }
 
+
         /**********************************************************
          * ValidateUser()
          *      Attempts to find user
@@ -67,6 +64,8 @@ namespace BankOfMakeBelieve.MethodClasses
 
             while (userNotFound)
             {
+                DisplayBankName.Banner();
+
                 inputUN = WriteRead("Username: ");
                 inputPW = WriteRead("Password: ");
 

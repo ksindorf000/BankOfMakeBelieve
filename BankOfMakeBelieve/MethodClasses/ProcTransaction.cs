@@ -30,59 +30,84 @@ namespace BankOfMakeBelieve.MethodClasses
          *     Display end balance
          *     Recall account menu
          ****************************************************/
-        private static void Withdraw(BankContext db, User currentUser)
+        public static void Withdraw(BankContext db, User currentUser)
         {
-
-            double wAmount;
-            double currentBal;
+            string userInput;
+            double wAmount = 0;
+            double acctBalance;
             bool validAmnt = false;
 
-            //List<int> acctIdList = db.UserAccounts.Select(u => u.AccountId).Where(u => u.UserId == currentUser.Id).ToList();
-
-            AccountActions.DisplayWelcomeMsg(db, currentUser);
-
-            GetValidateAccount(db, currentUser);
+            //Get Account balance
+            Account useAcct = GetValidateAccount(db, currentUser, "withdrawal");
+            acctBalance = useAcct.Balance;
 
             while (!validAmnt)
             {
-                validAmnt = double.TryParse(WriteRead("How much would you like to withdraw? (100.00): "),
-                    out wAmount);
+                Console.Clear();
+                AccountActions.DisplayWelcomeMsg(db, currentUser);
+
+                userInput = WriteRead("How much would you like to withdraw? \n " +
+                    "(100.00) or (C)ancel: ").ToUpper();
+
+                //If (C)ancel, break. Else, try to parse
+                if (userInput == "C")
+                {
+                    AccountActions.AccountMenu(db, currentUser);
+                    break;
+                }
+                else
+                {
+                    validAmnt = double.TryParse(userInput, out wAmount);
+                }
+
+                //If valid amount was entered and will not overdraft account
+                if (validAmnt && (acctBalance - wAmount) >= 0)
+                {
+                    useAcct.Balance = acctBalance - wAmount;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine($"Sorry, your account will not support a {wAmount} withdrawal.");
+                    validAmnt = false;
+                }
             }
 
-            //Get Account balance
+            Console.Clear();
+            AccountActions.AccountMenu(db, currentUser);
 
         }
 
         /*****************************************************
          * GetValidateAccount()
          ****************************************************/
-        private static Account GetValidateAccount(BankContext db, User currentUser)
+        private static Account GetValidateAccount(BankContext db, User currentUser, string wOrD) //Hehe, "wOrD" -- get it?
         {
             bool validAcctNum = false;
             int wchAcct = 0;
+            Account useAccount = new Account();
 
             //Get and validate account number
             while (!validAcctNum)
             {
-                validAcctNum = int.TryParse(WriteRead("Which account would you like to withdraw from? (Acct #): "),
+                Console.Clear();
+                AccountActions.DisplayWelcomeMsg(db, currentUser);
+
+                validAcctNum = int.TryParse(WriteRead($"In which account would you like to create a {wOrD}? (Acct #): "),
                     out wchAcct);
 
-                foreach (var acct in currentUser.userAccounts) //can't do .Contains() without extracting just AcctId to list?
+                foreach (var acct in currentUser.userAccounts)
                 {
-                    validAcctNum = (acct.AccountId == wchAcct) ? true : false;
-                    if (validAcctNum) { break; }
-                    else { Console.WriteLine("Sorry, that account number is invalid."); };
+                    validAcctNum = acct.AccountId == wchAcct;
+                    if (validAcctNum)
+                    {
+                        useAccount = acct.Account;
+                        break;
+                    }
+                    else { WriteRead("Sorry, that account number is invalid."); };
                 }
             }
-
-            //Get Account
-            var useAccount =
-                from Account in currentUser.userAccounts
-                where Account.Id == wchAcct
-                select new
-                {
-                    Account
-                };
+            return useAccount;
 
             //Get Account Balance
             /*
@@ -93,20 +118,6 @@ namespace BankOfMakeBelieve.MethodClasses
              * WHERE a.Id = {{ wchAcct }} AND u.Id = {{ currentUser.Id }}
              */
 
-            var acctBal =
-                from Account in db.Account
-                where Account.Id == useAccount.Id
-                select new
-                {
-                    acctBal = currentUser.userAccounts
-                };
         }
-
-
-
-
-
-
-
     }
 }
