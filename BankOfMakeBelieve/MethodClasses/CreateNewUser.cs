@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 
 namespace BankOfMakeBelieve.MethodClasses
 {
-    class CreateNewUser
+    public class CreateNewUser
     {
-        public string first;
-        public string last;
-        public string username;
-        private string password;
-        public DateTime dateJoined = DateTime.Now;
+        public static string first;
+        public static string last;
+        public static string username;
+        private static string password;
+        private static string accType;
+        private static double startBal;
 
         /*****************************************************
          * WriteRead()
          *     Combines C.W() and C.RL()
          ****************************************************/
-        static string WriteRead(string input)
+        private static string WriteRead(string input)
         {
             Console.Write(input);
             return Console.ReadLine();
@@ -29,38 +30,72 @@ namespace BankOfMakeBelieve.MethodClasses
          * GetVerifyInput()
          *     Gets and verifies User Data
          ****************************************************/
-        public void GetVerifyInput(BankContext db)
+        public static void GetVerifyInput(BankContext db)
         {
-            bool usernameUnique = true;
+            bool notUnique = true;
+            string tryAgain;
 
-            while (!usernameUnique)
+            first = WriteRead("First Name? ");
+            last = WriteRead("Last Name? ");
+
+            while (notUnique)
             {
-                string first = WriteRead("First Name? ");
-                string last = WriteRead("Last Name? ");
-                string username = WriteRead("UserName? ");
-                string password = WriteRead("Password? ");
+                username = WriteRead("UserName? ");
+                
+                //Check for existing username: false if match not found, true if match found
+                notUnique = db.User.Any(u => u.username == username); 
 
-                //Check for existing username
-                usernameUnique = db.User.Any(u => u.username == username);
+                if (!notUnique) { break; };
+
+                Console.WriteLine("That username is already in use.");
+                tryAgain = WriteRead("Would you like to (L)og In or (T)ry another username?");
+
+                if (tryAgain.ToUpper() == "L")
+                {
+                    Console.Clear();
+                    Program.LogIn(db);
+                }
             }
 
+            password = WriteRead("Password? ");
+
             AddNewUser(db);
+            AddNewAccount(db);
         }
 
         /*****************************************************
          * AddNewUser()
          ****************************************************/
-        private void AddNewUser(BankContext db)
+        private static void AddNewUser(BankContext db)
         {
             User newUser = new User
             {
                 FirstName = first,
                 LastName = last,
                 username = username,
-                DateJoined = dateJoined
-            };
+                password = password,
+                DateJoined = DateTime.Now
+        };
 
             db.User.Add(newUser);
+            db.SaveChanges();
+        }
+
+
+        /*****************************************************
+         * AddNewAccount()
+         *      Gets Account Type from user
+         *      Adds account to Account table
+         ****************************************************/
+        private static void AddNewAccount(BankContext db)
+        {
+            Account newAccount = new Account
+            {
+                Balance = startBal,
+                DateOpened = DateTime.Now
+            };
+
+            db.Account.Add(newAccount);
             db.SaveChanges();
         }
     }

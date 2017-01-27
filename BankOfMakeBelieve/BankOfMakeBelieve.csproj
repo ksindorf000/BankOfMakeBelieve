@@ -62,6 +62,10 @@
     <Compile Include="Migrations\201701262018114_AddedDateJoinedToUserTable.Designer.cs">
       <DependentUpon>201701262018114_AddedDateJoinedToUserTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701271537028_ChangedAccNameToType.cs" />
+    <Compile Include="Migrations\201701271537028_ChangedAccNameToType.Designer.cs">
+      <DependentUpon>201701271537028_ChangedAccNameToType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Transactions.cs" />
@@ -80,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701262018114_AddedDateJoinedToUserTable.resx">
       <DependentUpon>201701262018114_AddedDateJoinedToUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701271537028_ChangedAccNameToType.resx">
+      <DependentUpon>201701271537028_ChangedAccNameToType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

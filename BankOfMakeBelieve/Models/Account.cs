@@ -11,6 +11,6 @@ namespace BankOfMakeBelieve.Models
         public int Id { get; set; }
         public double Balance { get; set; }
         public DateTime DateOpened { get; set; }
-        public string Name { get; set; }
+        public string Type { get; set; }
     }
 }

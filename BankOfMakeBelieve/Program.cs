@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankOfMakeBelieve.MethodClasses;
 
 namespace BankOfMakeBelieve
 {
@@ -13,7 +14,7 @@ namespace BankOfMakeBelieve
          * WriteRead()
          *     Combines C.W() and C.RL()
          ****************************************************/
-        static string WriteRead(string input)
+        private static string WriteRead(string input)
         {
             Console.Write(input);
             return Console.ReadLine();
@@ -22,7 +23,7 @@ namespace BankOfMakeBelieve
         /*****************************************************
          * Main()
          ****************************************************/
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             CreateOrLogin();
 
@@ -31,7 +32,7 @@ namespace BankOfMakeBelieve
         /*****************************************************
          * CreateOrLogin()
          ****************************************************/
-        private static void CreateOrLogin()
+        public static void CreateOrLogin()
         {
             string newOrOldUser;
             bool valid = false;
@@ -48,7 +49,8 @@ namespace BankOfMakeBelieve
                             LogIn(db);
                             break;
                         case "C":
-                            CreateNewUser(db);
+                            CreateNewUser.GetVerifyInput(db); //Threw static error
+                            Console.Clear();
                             break;
                         default:
                             break;
@@ -60,7 +62,7 @@ namespace BankOfMakeBelieve
         /*****************************************************
          * LogIn()
          ****************************************************/
-        static void LogIn(BankContext db)
+        public static void LogIn(BankContext db)
         {
             string inputUN;
             string inputPW;
@@ -83,6 +85,7 @@ namespace BankOfMakeBelieve
                 else
                 {
                     Console.WriteLine("You've been logged in! Press ENTER to view account menu.");
+                    Console.ReadLine();
                     //AccountMenu();
                 }
             }
