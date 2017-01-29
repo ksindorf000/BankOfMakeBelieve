@@ -60,11 +60,7 @@ namespace BankOfMakeBelieve.MethodClasses
 
             WriteRead("\nPress ENTER to return to the Account Menu.");
             AccountActions.AccountMenu(db, currentUser);
-
-
-        //Lines 54-
-        //http://stackoverflow.com/questions/18929483/unable-to-create-a-constant-value-of-type-only-primitive-types-or-enumeration-ty
-
+            
         }
     }
 }
