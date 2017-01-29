@@ -13,17 +13,7 @@ namespace BankOfMakeBelieve.MethodClasses
         public static string last;
         public static string username;
         private static string password;
-
-        /*****************************************************
-         * WriteRead()
-         *     Combines C.W() and C.RL()
-         ****************************************************/
-        private static string WriteRead(string input)
-        {
-            Console.Write(input);
-            return Console.ReadLine();
-        }
-
+        
         /*****************************************************
          * GetVerifyInput()
          *     Gets and verifies User Data
@@ -33,12 +23,12 @@ namespace BankOfMakeBelieve.MethodClasses
             bool notUnique = true;
             string tryAgain;
 
-            first = WriteRead("First Name? ");
-            last = WriteRead("Last Name? ");
+            first = CWLandCRL.WriteRead("First Name? ");
+            last = CWLandCRL.WriteRead("Last Name? ");
 
             while (notUnique)
             {
-                username = WriteRead("UserName? ");
+                username = CWLandCRL.WriteRead("UserName? ");
 
                 //Check for existing username: false if match not found, true if match found
                 notUnique = db.User.Any(u => u.username == username);
@@ -46,7 +36,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 if (!notUnique) { break; };
 
                 Console.WriteLine("That username is already in use.");
-                tryAgain = WriteRead("Would you like to (L)og In or (T)ry another username?");
+                tryAgain = CWLandCRL.WriteRead("Would you like to (L)og In or (T)ry another username?");
 
                 if (tryAgain.ToUpper() == "L")
                 {
@@ -55,7 +45,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 }
             }
 
-            password = WriteRead("Password? ");
+            password = CWLandCRL.WriteRead("Password? ");
 
             AddNewUser(db);
         }

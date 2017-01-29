@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankOfMakeBelieve.MethodClasses;
 using BankOfMakeBelieve.Models;
 
 namespace BankOfMakeBelieve.MethodClasses
@@ -14,15 +9,6 @@ namespace BankOfMakeBelieve.MethodClasses
         public static double acctBalance;
         public static Account useAccount = new Account();
 
-        /*****************************************************
-         * WriteRead()
-         *     Combines C.W() and C.RL()
-         ****************************************************/
-        private static string WriteRead(string input)
-        {
-            Console.Write(input);
-            return Console.ReadLine();
-        }
 
         /*****************************************************
          * Deposit()
@@ -38,11 +24,11 @@ namespace BankOfMakeBelieve.MethodClasses
             double dAmount;
 
             //Get Account balance
-            GetValidateAcctNum(db, currentUser, wOrD);
+            TransValidations.AccountNum(db, currentUser, wOrD);
             acctBalance = useAccount.Balance;
 
             //Get Validate Amount
-            dAmount = ValidateAmount(db, currentUser);
+            dAmount = TransValidations.Amount(db, currentUser, wOrD);
 
             //Update Account.Balance
             useAccount.Balance += dAmount;
@@ -71,11 +57,11 @@ namespace BankOfMakeBelieve.MethodClasses
             double wAmount;
 
             //Get Account balance
-            GetValidateAcctNum(db, currentUser, wOrD);
+            TransValidations.AccountNum(db, currentUser, wOrD);
             acctBalance = useAccount.Balance;
 
             //Get Validate Amount
-            wAmount = ValidateAmount(db, currentUser);
+            wAmount = TransValidations.Amount(db, currentUser, wOrD);
 
             //Update Account.Balance
             useAccount.Balance += wAmount;
@@ -90,95 +76,67 @@ namespace BankOfMakeBelieve.MethodClasses
         }
 
         /*****************************************************
-         * GetValidateAccount()
+         * Transfer()
+         *     Gets account to withdraw from
+         *     Gets amount to withdraw
+         *     Selects current balance
+         *     Error if amount would overdraft account
+         *     Gets transfUserId if external transfer
+         *     Gets accountId if internal transfer
+         *     Display end balance
+         *     Recall account menu
          ****************************************************/
-        internal static Account GetValidateAcctNum(BankContext db, User currentUser, string wOrD) //Hehe, "wOrD" -- get it?
+        public static void Transfer(BankContext db, User currentUser)
         {
-            bool validAcctNum = false;
-            int wchAcct = 0;
+            wOrD = "withdraw";
+            double tAmount;
+            string intOrExt; //Internal or External
+            Account transToAccount = new Account();
+            User transfUser = new User();
+                        
+            //Get Account balance
+            TransValidations.AccountNum(db, currentUser, wOrD);
+            acctBalance = useAccount.Balance;
 
-            //Get and validate account number
-            while (!validAcctNum)
+            //Get Validate Amount
+            tAmount = TransValidations.Amount(db, currentUser, wOrD);
+
+            //Ask if transfer is internal or external
+            intOrExt = CWLandCRL.WriteRead($"Would you like to deposit {tAmount} into another of \n" +
+                "(Y)our accounts or into the account of (A)nother user?").ToUpper();
+
+            switch (intOrExt)
             {
-                Console.Clear();
-                AccountActions.DisplayWelcomeMsg(db, currentUser);
-
-                validAcctNum = int.TryParse(WriteRead($"In which account would you like to create a {wOrD}? (Acct #): "),
-                    out wchAcct);
-
-                foreach (var acct in currentUser.userAccounts)
-                {
-                    validAcctNum = acct.AccountId == wchAcct;
-
-                    if (validAcctNum)
-                    {
-                        useAccount = acct.Account;
-                        validAcctNum = true;
-                        break;
-                    }
-                    else { validAcctNum = false; }
-                }
-            }
-
-            return useAccount;
-            //Get Account Balance
-            /*
-             * SELECT a.bal
-             * FROM Account a
-             * INNER JOIN UserAccounts ua ON ua.AccountId = a.Id
-             * INNER JOIN User u ON u.Id = ua.UserId
-             * WHERE a.Id = {{ wchAcct }} AND u.Id = {{ currentUser.Id }}
-             */
-
-        }
-
-        /*****************************************************
-         * ValidateAmount()
-         *     If input = (C)ancel, kick back to AccountMenu()
-         *     Else TryParse input and return amount
-         ****************************************************/
-        private static double ValidateAmount(BankContext db, User currentUser)
-        {
-            string userInput;
-            double amount = 0;
-            bool validAmnt = false;
-
-            while (!validAmnt)
-            {
-                Console.Clear();
-                AccountActions.DisplayWelcomeMsg(db, currentUser);
-
-                userInput = WriteRead($"How much would you like to {wOrD}? \n " +
-                    "(100.00) or (C)ancel: ").ToUpper();
-
-                //If (C)ancel, break. Else, try to parse
-                if (userInput == "C")
-                {
-                    AccountActions.AccountMenu(db, currentUser);
+                case "Y":
+                    useAccount = TransValidations.AccountNum(db, currentUser, "withdraw");
+                    transToAccount = TransValidations.AccountNum(db, currentUser, "deposit");
                     break;
-                }
-                else
-                {
-                    validAmnt = double.TryParse(userInput, out amount);
-                }
-
-                //Check for overdraft
-                if (validAmnt && wOrD == "withdraw")
-                {
-                    if ((acctBalance - amount) >= 0)
-                    {
-                        amount *= -1;
-                        validAmnt = true;
-                    }
-                    else
-                    {
-                        WriteRead($"Sorry, your account will not support a ${amount} withdrawal.");
-                        validAmnt = false;
-                    }
-                }
+                case "A":
+                    transToAccount = TransValidations.TransToAcct(db);
+                    transfUser = TransValidations.ReturnUser();
+                    break;
+                default:
+                    CWLandCRL.WriteRead("Sorry, that was not an option.");
+                    break;
             }
 
-            return amount;
+            //Update Account.Balance for withdrawal account
+            useAccount.Balance += tAmount;
+            
+            //Add withdrawal record to Transactions
+            AddDisplayTransactions.AddTransactionRec(db, currentUser, useAccount, tAmount);
+
+            //Update Account.Balance for deposit account
+            transToAccount.Balance += tAmount /= -1;
+
+            //Add deposit record to Transactions
+            AddDisplayTransactions.AddTransactionRec(db, transfUser, transToAccount, tAmount);
+            
+            db.SaveChanges();
+
+            Console.Clear();
+            AccountActions.AccountMenu(db, currentUser);
+
         }
     }
 }

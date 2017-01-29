@@ -7,17 +7,7 @@ namespace BankOfMakeBelieve.MethodClasses
     class AccountActions
     {
         public static string input;
-
-        /*****************************************************
-         * WriteRead()
-         *     Combines C.W() and C.RL()
-         ****************************************************/
-        private static string WriteRead(string input)
-        {
-            Console.Write(input);
-            return Console.ReadLine();
-        }
-
+        
         /*****************************************************
          * AccountMenu()
          ****************************************************/
@@ -25,12 +15,13 @@ namespace BankOfMakeBelieve.MethodClasses
         {
             DisplayWelcomeMsg(db, currentUser);
             
-            input = WriteRead("How can we help you today?: \n" +
+            input = CWLandCRL.WriteRead("How can we help you today?: \n" +
                             "Make a (D)eposit \n" +
                             "Make a (W)ithdrawal \n" +
                             "Create (N)ew Account \n" +
-                            //"Make a (T)ransfer between Accounts \n" +
+                            "Make a (T)ransfer \n" +
                             //"Add New (U)ser To Your Accounts \n" +
+                            //"Change (P)assword \n" +
                             "See all (A)ctivity for an Account \n" +
                             "(L)og Out \n\n");
 
@@ -92,10 +83,10 @@ namespace BankOfMakeBelieve.MethodClasses
                         CreateNewAccount.GetTypeAndBal(db, currentUser);
                         invalidInput = false;
                         break;
-                    //case "T": //Transfer
-                    //    ProcTransaction.Transfer(db, currentUser);
-                    //    invalidInput = false;
-                    //    break;
+                    case "T": //Transfer
+                        ProcTransaction.Transfer(db, currentUser);
+                        invalidInput = false;
+                        break;
                     //case "U": //New User
                     //    CreateNewUser.AddToExistingAcct(db, currentUser);
                     //    invalidInput = false;
@@ -109,7 +100,7 @@ namespace BankOfMakeBelieve.MethodClasses
                         Console.Clear();
                         break;
                     default:
-                        WriteRead("Sorry, you must choose one of the options above.");
+                        CWLandCRL.WriteRead("Sorry, you must choose one of the options above.");
                         AccountMenu(db, currentUser);
                         break;
                 }

@@ -11,16 +11,6 @@ namespace BankOfMakeBelieve.MethodClasses
     class AddDisplayTransactions
     {
         /*****************************************************
-         * WriteRead()
-         *     Combines C.W() and C.RL()
-         ****************************************************/
-        private static string WriteRead(string input)
-        {
-            Console.Write(input);
-            return Console.ReadLine();
-        }
-
-        /*****************************************************
         * AddTransactionRec()
         ****************************************************/
         public static void AddTransactionRec(BankContext db, User currentUser, Account useAccount, double transAmt)
@@ -43,7 +33,7 @@ namespace BankOfMakeBelieve.MethodClasses
         ****************************************************/
         internal static void DisplayAllAcctActivity(BankContext db, User currentUser)
         {
-            Account useAccount = ProcTransaction.GetValidateAcctNum(db, currentUser, "transaction report");
+            Account useAccount = TransValidations.AccountNum(db, currentUser, "transaction report");
 
             Console.Clear();
             AccountActions.DisplayWelcomeMsg(db, currentUser);
@@ -58,7 +48,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 Console.WriteLine(transaction);
             }
 
-            WriteRead("\nPress ENTER to return to the Account Menu.");
+            CWLandCRL.WriteRead("\nPress ENTER to return to the Account Menu.");
             AccountActions.AccountMenu(db, currentUser);
             
         }

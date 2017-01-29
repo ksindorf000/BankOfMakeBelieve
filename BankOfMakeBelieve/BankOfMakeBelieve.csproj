@@ -60,6 +60,8 @@
     <Compile Include="MethodClasses\LogIn.cs" />
     <Compile Include="MethodClasses\ProcTransaction.cs" />
     <Compile Include="MethodClasses\AddDisplayTransactions.cs" />
+    <Compile Include="MethodClasses\TransValidations.cs" />
+    <Compile Include="MethodClasses\CWLandCRL.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.cs" />
     <Compile Include="Migrations\201701261959490_InitialSetUp.Designer.cs">
       <DependentUpon>201701261959490_InitialSetUp.cs</DependentUpon>

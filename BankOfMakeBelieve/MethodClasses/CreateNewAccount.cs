@@ -8,17 +8,7 @@ namespace BankOfMakeBelieve.MethodClasses
 
         private static string accType;
         private static double startBal;
-
-        /*****************************************************
-         * WriteRead()
-         *     Combines C.W() and C.RL()
-         ****************************************************/
-        private static string WriteRead(string input)
-        {
-            Console.Write(input);
-            return Console.ReadLine();
-        }
-
+        
         /*****************************************************
          * GetTypeAndBal()
          *      Gets Account Type from user
@@ -32,7 +22,7 @@ namespace BankOfMakeBelieve.MethodClasses
             Console.Clear();
 
             Console.WriteLine($"------- Welcome to the Bank of Make Believe, {newUser.FirstName}! -------\n");
-            accType = WriteRead("What type of account would you like to create? \n" +
+            accType = CWLandCRL.WriteRead("What type of account would you like to create? \n" +
                 "(C)hecking or (S)aving: ");
 
             while (invalidType)
@@ -49,7 +39,7 @@ namespace BankOfMakeBelieve.MethodClasses
                         break;
                     default:
                         invalidType = true;
-                        accType = WriteRead("Sorry, you must choose (C)hecking or (S)avings: ");
+                        accType = CWLandCRL.WriteRead("Sorry, you must choose (C)hecking or (S)avings: ");
                         break;
                 }
             }
@@ -58,7 +48,7 @@ namespace BankOfMakeBelieve.MethodClasses
 
             while (!validBal)
             {
-                validBal = double.TryParse(WriteRead($"How much would you like to deposit into " +
+                validBal = double.TryParse(CWLandCRL.WriteRead($"How much would you like to deposit into " +
                     "your {accType} account? (100.00) "), out startBal);
                 Console.Clear();
             }
