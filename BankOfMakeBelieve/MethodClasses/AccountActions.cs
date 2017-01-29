@@ -29,9 +29,9 @@ namespace BankOfMakeBelieve.MethodClasses
                             "Make a (D)eposit \n" +
                             "Make a (W)ithdrawal \n" +
                             "Create (N)ew Account \n" +
-                            //"Make a (T)ransfer between Accounts" +
-                            //"Add New (U)ser To Your Accounts" +
-                            //"See all (A)ctivity for an Account" +
+                            //"Make a (T)ransfer between Accounts \n" +
+                            //"Add New (U)ser To Your Accounts \n" +
+                            "See all (A)ctivity for an Account \n" +
                             "(L)og Out \n\n");
 
             ProcessSelection(db, currentUser, input);
@@ -39,8 +39,8 @@ namespace BankOfMakeBelieve.MethodClasses
 
         /*****************************************************
         * DisplayWelcomeMsg()
-        *   Personlized welcome
-        *   Displays account balances
+        *   Personalized welcome
+        *   Displays accounts with balances
         ****************************************************/
         public static void DisplayWelcomeMsg(BankContext db, User currentUser)
         {
@@ -64,6 +64,7 @@ namespace BankOfMakeBelieve.MethodClasses
             {
                 Console.WriteLine(acct.Account);
             }
+
             Console.WriteLine("\n\n");
         }
 
@@ -99,10 +100,10 @@ namespace BankOfMakeBelieve.MethodClasses
                     //    CreateNewUser.AddToExistingAcct(db, currentUser);
                     //    invalidInput = false;
                     //    break;
-                    //case "A": //All Activity
-                    //    Transactions.ViewAllActivity(db, currentUser);
-                    //    invalidInput = false;
-                    //    break;
+                    case "A": //All Activity
+                        AddDisplayTransactions.DisplayAllAcctActivity(db, currentUser);
+                        invalidInput = false;
+                        break;
                     case "L":
                         invalidInput = false;
                         Console.Clear();

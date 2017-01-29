@@ -17,5 +17,11 @@ namespace BankOfMakeBelieve.Models
         //Virtual Accessors
         public virtual User User { get; set; }
         public virtual Account Account { get; set; }
+
+        public override string ToString()
+        {
+            return $"\t\t {Id} \t\t {Date.ToShortDateString()} \t\t {User.FirstName} {User.LastName} \t\t {Amount}";
+        }
+
     }
 }

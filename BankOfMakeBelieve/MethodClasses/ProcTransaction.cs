@@ -82,7 +82,7 @@ namespace BankOfMakeBelieve.MethodClasses
             db.SaveChanges();
 
             //Add record to Transactions
-            AddDisplayTransactions.AddTransactionRec(db, currentUser, useAccount, dAmount);
+            AddDisplayTransactions.AddTransactionRec(db, currentUser, useAccount, wAmount);
 
             Console.Clear();
             AccountActions.AccountMenu(db, currentUser);
@@ -92,7 +92,7 @@ namespace BankOfMakeBelieve.MethodClasses
         /*****************************************************
          * GetValidateAccount()
          ****************************************************/
-        private static void GetValidateAcctNum(BankContext db, User currentUser, string wOrD) //Hehe, "wOrD" -- get it?
+        internal static Account GetValidateAcctNum(BankContext db, User currentUser, string wOrD) //Hehe, "wOrD" -- get it?
         {
             bool validAcctNum = false;
             int wchAcct = 0;
@@ -120,6 +120,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 }
             }
 
+            return useAccount;
             //Get Account Balance
             /*
              * SELECT a.bal
