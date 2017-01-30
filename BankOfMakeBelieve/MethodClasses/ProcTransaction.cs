@@ -28,7 +28,7 @@ namespace BankOfMakeBelieve.MethodClasses
             acctBalance = useAccount.Balance;
 
             //Get Validate Amount
-            dAmount = TransValidations.Amount(db, currentUser, wOrD);
+            dAmount = TransValidations.Amount(db, currentUser, wOrD, acctBalance);
 
             //Update Account.Balance
             useAccount.Balance += dAmount;
@@ -61,7 +61,7 @@ namespace BankOfMakeBelieve.MethodClasses
             acctBalance = useAccount.Balance;
 
             //Get Validate Amount
-            wAmount = TransValidations.Amount(db, currentUser, wOrD);
+            wAmount = TransValidations.Amount(db, currentUser, wOrD, acctBalance);
 
             //Update Account.Balance
             useAccount.Balance += wAmount;
@@ -94,26 +94,25 @@ namespace BankOfMakeBelieve.MethodClasses
             Account transToAccount = new Account();
             User transfUser = new User();
                         
-            //Get Account balance
-            TransValidations.AccountNum(db, currentUser, wOrD);
+            //Get Account balance for withdrawal
+            useAccount = TransValidations.AccountNum(db, currentUser, wOrD);
             acctBalance = useAccount.Balance;
 
-            //Get Validate Amount
-            tAmount = TransValidations.Amount(db, currentUser, wOrD);
+            //Get Validate Amount for withdrawal
+            tAmount = TransValidations.Amount(db, currentUser, wOrD, acctBalance);
 
             //Ask if transfer is internal or external
-            intOrExt = CWLandCRL.WriteRead($"Would you like to deposit {tAmount} into another of \n" +
+            intOrExt = CWLandCRL.WriteRead($"\nWould you like to deposit {tAmount / -1} into another of \n" +
                 "(Y)our accounts or into the account of (A)nother user?").ToUpper();
 
             switch (intOrExt)
             {
                 case "Y":
-                    useAccount = TransValidations.AccountNum(db, currentUser, "withdraw");
                     transToAccount = TransValidations.AccountNum(db, currentUser, "deposit");
                     break;
                 case "A":
-                    transToAccount = TransValidations.TransToAcct(db);
-                    transfUser = TransValidations.ReturnUser();
+                    transToAccount = TransValidations.TransToAcct(db); //Get acct of other User
+                    transfUser = TransValidations.ReturnUser(); //Return other User
                     break;
                 default:
                     CWLandCRL.WriteRead("Sorry, that was not an option.");

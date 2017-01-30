@@ -26,8 +26,11 @@ namespace BankOfMakeBelieve.MethodClasses
             //Get and validate account number
             while (!validAcctNum)
             {
-                Console.Clear();
-                AccountActions.DisplayWelcomeMsg(db, currentUser);
+                if (wOrD != "transfer")
+                {
+                    Console.Clear();
+                    AccountActions.DisplayWelcomeMsg(db, currentUser);
+                }
 
                 validAcctNum = int.TryParse(CWLandCRL.WriteRead($"In which account would you like to create a {wOrD}? (Acct #): "),
                     out wchAcct);
@@ -63,7 +66,7 @@ namespace BankOfMakeBelieve.MethodClasses
          *     If input = (C)ancel, kick back to AccountMenu()
          *     Else TryParse input and return amount
          ****************************************************/
-        internal static double Amount(BankContext db, User currentUser, string wOrD)
+        internal static double Amount(BankContext db, User currentUser, string wOrD, double acctBalance)
         {
             string userInput;
             double amount = 0;
@@ -115,14 +118,14 @@ namespace BankOfMakeBelieve.MethodClasses
          ****************************************************/
         internal static Account TransToAcct(BankContext db)
         {
-            bool valid = true;
+            bool valid = false;
             int transfUserId;
             Account transAcct = new Account();
 
             //Validate transfUserId as int and as existing user
             while (!valid)
             {
-                valid = int.TryParse(CWLandCRL.WriteRead("To which user would you like to transfer funds? (UserId): "), out transfUserId);
+                valid = int.TryParse(CWLandCRL.WriteRead("\nTo which user would you like to transfer funds? (UserId): "), out transfUserId);
 
                 //Check for existing username
                 if (valid && db.User.Any(u => u.Id == transfUserId))
@@ -133,12 +136,12 @@ namespace BankOfMakeBelieve.MethodClasses
                     transfUser = db.User.First(u => u.Id == transfUserId);
 
                     //Display user's accounts
+                    Console.WriteLine($"\n{transfUser.FirstName}'s available accounts:");
                     foreach (var acct in transfUser.userAccounts)
                     {
-                        Console.WriteLine(acct.Account);
+                        Console.WriteLine(acct.Account.Type + acct.Account.Id);
                     }
-
-                    transAcct = AccountNum(db, transfUser, "deposit");
+                    transAcct = AccountNum(db, transfUser, "transfer");
                 }
                 else
                 {
