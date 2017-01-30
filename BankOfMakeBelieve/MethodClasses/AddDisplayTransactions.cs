@@ -13,12 +13,12 @@ namespace BankOfMakeBelieve.MethodClasses
         /*****************************************************
         * AddTransactionRec()
         ****************************************************/
-        public static void AddTransactionRec(BankContext db, User currentUser, Account useAccount, double transAmt)
+        public static void AddTransactionRec(BankContext db, User theUser, Account useAccount, double transAmt)
         {
             Transactions newRecord = new Transactions
             {
                 AccountId = useAccount.Id,
-                UserId = currentUser.Id,
+                UserId = theUser.Id,
                 Amount = transAmt,
                 Date = DateTime.Now
             };

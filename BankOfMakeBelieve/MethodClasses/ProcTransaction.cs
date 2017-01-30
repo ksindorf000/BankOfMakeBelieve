@@ -93,7 +93,7 @@ namespace BankOfMakeBelieve.MethodClasses
             string intOrExt; //Internal or External
             Account transToAccount = new Account();
             User transfUser = new User();
-                        
+
             //Get Account balance for withdrawal
             useAccount = TransValidations.AccountNum(db, currentUser, wOrD);
             acctBalance = useAccount.Balance;
@@ -121,16 +121,23 @@ namespace BankOfMakeBelieve.MethodClasses
 
             //Update Account.Balance for withdrawal account
             useAccount.Balance += tAmount;
-            
+
             //Add withdrawal record to Transactions
             AddDisplayTransactions.AddTransactionRec(db, currentUser, useAccount, tAmount);
 
             //Update Account.Balance for deposit account
             transToAccount.Balance += tAmount /= -1;
 
-            //Add deposit record to Transactions
-            AddDisplayTransactions.AddTransactionRec(db, transfUser, transToAccount, tAmount);
-            
+            if (intOrExt == "Y")
+            {
+                //Add deposit record to current user's other account
+                AddDisplayTransactions.AddTransactionRec(db, currentUser, transToAccount, tAmount);
+            }
+            else if (intOrExt == "A")
+            {
+                //Add deposit record to other user's account
+                AddDisplayTransactions.AddTransactionRec(db, currentUser, transToAccount, tAmount);
+            }
             db.SaveChanges();
 
             Console.Clear();
