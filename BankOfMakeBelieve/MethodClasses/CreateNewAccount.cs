@@ -22,7 +22,7 @@ namespace BankOfMakeBelieve.MethodClasses
             Console.Clear();
 
             Console.WriteLine($"------- Welcome to the Bank of Make Believe, {newUser.FirstName}! -------\n");
-            accType = CWLandCRL.WriteRead("What type of account would you like to create? \n" +
+            accType = Helpers.WriteRead("What type of account would you like to create? \n" +
                 "(C)hecking or (S)aving: ");
 
             while (invalidType)
@@ -39,7 +39,7 @@ namespace BankOfMakeBelieve.MethodClasses
                         break;
                     default:
                         invalidType = true;
-                        accType = CWLandCRL.WriteRead("Sorry, you must choose (C)hecking or (S)avings: ");
+                        accType = Helpers.WriteRead("Sorry, you must choose (C)hecking or (S)avings: ");
                         break;
                 }
             }
@@ -48,8 +48,8 @@ namespace BankOfMakeBelieve.MethodClasses
 
             while (!validBal)
             {
-                validBal = double.TryParse(CWLandCRL.WriteRead($"How much would you like to deposit into " +
-                    "your {accType} account? (100.00) "), out startBal);
+                validBal = double.TryParse(Helpers.WriteRead("How much would you like to deposit into " +
+                    $"your {accType} account? (100.00) "), out startBal);
                 Console.Clear();
             }
             

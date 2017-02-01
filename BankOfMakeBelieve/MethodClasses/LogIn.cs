@@ -20,7 +20,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 while (!valid)
                 {
                     DisplayBankName.Banner();
-                    newOrOldUser = CWLandCRL.WriteRead("(L)og In or (C)reate New User: ").ToUpper();
+                    newOrOldUser = Helpers.WriteRead("(L)og In or (C)reate New User: ").ToUpper();
 
                     switch (newOrOldUser)
                     {
@@ -56,15 +56,15 @@ namespace BankOfMakeBelieve.MethodClasses
             {
                 DisplayBankName.Banner();
 
-                inputUN = CWLandCRL.WriteRead("Username: ");
-                inputPW = CWLandCRL.WriteRead("Password: ");
+                inputUN = Helpers.WriteRead("Username: ");
+                inputPW = Helpers.WriteRead("Password: ");
 
                 //Get User
                 List<User> findUser = db.User.Where(u => u.username == inputUN && u.password == inputPW).ToList();
 
                 if (!findUser.Any())
                 {
-                    CWLandCRL.WriteRead("Invalid Username or Password");
+                    Helpers.WriteRead("Invalid Username or Password");
                     Console.Clear();
                     CreateOrLogin();
                 }

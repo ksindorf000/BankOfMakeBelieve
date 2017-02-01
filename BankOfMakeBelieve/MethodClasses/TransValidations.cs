@@ -32,7 +32,7 @@ namespace BankOfMakeBelieve.MethodClasses
                     AccountActions.DisplayWelcomeMsg(db, currentUser);
                 }
 
-                validAcctNum = int.TryParse(CWLandCRL.WriteRead($"In which account would you like to create a {wOrD}? (Acct #): "),
+                validAcctNum = int.TryParse(Helpers.WriteRead($"In which account would you like to create a {wOrD}? (Acct #): "),
                     out wchAcct);
 
                 foreach (var acct in currentUser.userAccounts)
@@ -77,7 +77,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 Console.Clear();
                 AccountActions.DisplayWelcomeMsg(db, currentUser);
 
-                userInput = CWLandCRL.WriteRead($"How much would you like to {wOrD}? \n " +
+                userInput = Helpers.WriteRead($"How much would you like to {wOrD}? \n " +
                     "(100.00) or (C)ancel: ").ToUpper();
 
                 //If (C)ancel, break. Else, try to parse
@@ -94,14 +94,14 @@ namespace BankOfMakeBelieve.MethodClasses
                 //Check for overdraft
                 if (validAmnt && wOrD == "withdraw")
                 {
-                    if ((acctBalance - amount) >= 0)
+                    if ((acctBalance -= amount) >= 0)
                     {
                         amount *= -1;
                         validAmnt = true;
                     }
                     else
                     {
-                        CWLandCRL.WriteRead($"Sorry, your account will not support a ${amount} withdrawal.");
+                        Helpers.WriteRead($"Sorry, your account will not support a ${amount} withdrawal.");
                         validAmnt = false;
                     }
                 }
@@ -125,7 +125,8 @@ namespace BankOfMakeBelieve.MethodClasses
             //Validate transfUserId as int and as existing user
             while (!valid)
             {
-                valid = int.TryParse(CWLandCRL.WriteRead("\nTo which user would you like to transfer funds? (UserId): "), out transfUserId);
+                valid = int.TryParse(Helpers.WriteRead("\nTo which user would you like to transfer funds? (UserId): "), 
+                    out transfUserId);
 
                 //Check for existing username
                 if (valid && db.User.Any(u => u.Id == transfUserId))
@@ -145,7 +146,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 }
                 else
                 {
-                    CWLandCRL.WriteRead("Sorry, that UserId is invalid.");
+                    Helpers.WriteRead("Sorry, that UserId is invalid.");
                     valid = false;
                 }
             }

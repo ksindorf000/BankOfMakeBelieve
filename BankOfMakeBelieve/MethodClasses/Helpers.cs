@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankOfMakeBelieve.MethodClasses
 {
-    class CWLandCRL
+    class Helpers
     {
         /*****************************************************
          * WriteRead()

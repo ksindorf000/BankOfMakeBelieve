@@ -15,7 +15,7 @@ namespace BankOfMakeBelieve.MethodClasses
         {
             DisplayWelcomeMsg(db, currentUser);
             
-            input = CWLandCRL.WriteRead("How can we help you today?: \n" +
+            input = Helpers.WriteRead("How can we help you today?: \n" +
                             "Make a (D)eposit \n" +
                             "Make a (W)ithdrawal \n" +
                             "Create (N)ew Account \n" +
@@ -100,7 +100,7 @@ namespace BankOfMakeBelieve.MethodClasses
                         Console.Clear();
                         break;
                     default:
-                        CWLandCRL.WriteRead("Sorry, you must choose one of the options above.");
+                        Helpers.WriteRead("Sorry, you must choose one of the options above.");
                         AccountMenu(db, currentUser);
                         break;
                 }

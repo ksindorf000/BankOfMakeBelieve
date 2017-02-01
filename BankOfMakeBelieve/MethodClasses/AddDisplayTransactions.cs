@@ -48,7 +48,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 Console.WriteLine(transaction);
             }
 
-            CWLandCRL.WriteRead("\nPress ENTER to return to the Account Menu.");
+            Helpers.WriteRead("\nPress ENTER to return to the Account Menu.");
             AccountActions.AccountMenu(db, currentUser);
             
         }

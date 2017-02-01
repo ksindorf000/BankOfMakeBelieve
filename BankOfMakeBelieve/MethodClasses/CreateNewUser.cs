@@ -23,12 +23,12 @@ namespace BankOfMakeBelieve.MethodClasses
             bool notUnique = true;
             string tryAgain;
 
-            first = CWLandCRL.WriteRead("First Name? ");
-            last = CWLandCRL.WriteRead("Last Name? ");
+            first = Helpers.WriteRead("First Name? ");
+            last = Helpers.WriteRead("Last Name? ");
 
             while (notUnique)
             {
-                username = CWLandCRL.WriteRead("UserName? ");
+                username = Helpers.WriteRead("UserName? ");
 
                 //Check for existing username: false if match not found, true if match found
                 notUnique = db.User.Any(u => u.username == username);
@@ -36,7 +36,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 if (!notUnique) { break; };
 
                 Console.WriteLine("That username is already in use.");
-                tryAgain = CWLandCRL.WriteRead("Would you like to (L)og In or (T)ry another username?");
+                tryAgain = Helpers.WriteRead("Would you like to (L)og In or (T)ry another username?");
 
                 if (tryAgain.ToUpper() == "L")
                 {
@@ -45,7 +45,7 @@ namespace BankOfMakeBelieve.MethodClasses
                 }
             }
 
-            password = CWLandCRL.WriteRead("Password? ");
+            password = Helpers.WriteRead("Password? ");
 
             AddNewUser(db);
         }

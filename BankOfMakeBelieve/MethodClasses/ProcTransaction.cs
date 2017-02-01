@@ -24,7 +24,7 @@ namespace BankOfMakeBelieve.MethodClasses
             double dAmount;
 
             //Get Account balance
-            TransValidations.AccountNum(db, currentUser, wOrD);
+            useAccount = TransValidations.AccountNum(db, currentUser, wOrD);
             acctBalance = useAccount.Balance;
 
             //Get Validate Amount
@@ -57,7 +57,7 @@ namespace BankOfMakeBelieve.MethodClasses
             double wAmount;
 
             //Get Account balance
-            TransValidations.AccountNum(db, currentUser, wOrD);
+            useAccount = TransValidations.AccountNum(db, currentUser, wOrD);
             acctBalance = useAccount.Balance;
 
             //Get Validate Amount
@@ -102,7 +102,7 @@ namespace BankOfMakeBelieve.MethodClasses
             tAmount = TransValidations.Amount(db, currentUser, wOrD, acctBalance);
 
             //Ask if transfer is internal or external
-            intOrExt = CWLandCRL.WriteRead($"\nWould you like to deposit {tAmount / -1} into another of \n" +
+            intOrExt = Helpers.WriteRead($"\nWould you like to deposit {tAmount / -1} into another of \n" +
                 "(Y)our accounts or into the account of (A)nother user?").ToUpper();
 
             switch (intOrExt)
@@ -115,7 +115,7 @@ namespace BankOfMakeBelieve.MethodClasses
                     transfUser = TransValidations.ReturnUser(); //Return other User
                     break;
                 default:
-                    CWLandCRL.WriteRead("Sorry, that was not an option.");
+                    Helpers.WriteRead("Sorry, that was not an option.");
                     break;
             }
 
